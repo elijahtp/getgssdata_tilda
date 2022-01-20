@@ -1,0 +1,73 @@
+<script>
+    document.querySelector('#rec313495733').style.display = 'none';
+    var prms = [
+    {
+    id: "313495733",
+    url: "https://docs.google.com/spreadsheets/d/sheetkey/edit?usp=sharing",
+    req: "select L where I='https://qrly.tilda.ws/q'"
+    },
+    ];
+    </script>
+    <script>
+    function getGssData(){if(true){"0"===prms[curBlock].id&&$("script[src]").each(function(){~this.src.indexOf("gss4tilda_table.js")&&(prms[curBlock].id=$(this).parents(".r").prev().attr("id").substr(3))});var a=prms[curBlock].url.slice(prms[curBlock].url.indexOf("spreadsheets/d/")+15,prms[curBlock].url.indexOf("/edit?"));$.ajax({url:"https://docs.google.com/a/google.com/spreadsheets/d/"+a+"/gviz/tq?tq="+encodeURIComponent(prms[curBlock].req),dataType:"jsonp"})}}function htmlentities(a){var b=document.createElement("div"),c=document.createTextNode(a);return b.appendChild(c),b.innerHTML}var curBlock=0,google={visualization:{Query:{setResponse:function(){}}}},oldF=t431_createTable,styles={};t431_createTable=function(a,b,c,d,e,f,g,h,i,j){styles["rec"+a]={t431__tablehead:b,t431__tablebody:c,per:d,w:e,t431__btnstyles:f,t431__tdstyles:g,t431__thstyles:h,t431__oddrowstyles:i,t431__evenrowstyles:j},oldF(a,b,c,d,e,f,g,h,i,j)},google.visualization.Query.setResponse=function(a){for(var b="",c=0;c<a.table.cols.length;c++)b+=htmlentities(a.table.cols[c].label)+";";b=b.slice(0,-1);for(var d="",c=0;c<a.table.rows.length;c++){for(var e=0;e<a.table.rows[c].c.length;e++)d+=null!==a.table.rows[c].c[e]&&"object"==typeof a.table.rows[c].c[e]?htmlentities(a.table.rows[c].c[e].v)+";":";";d=d.slice(0,-1),d+="\n"}d=d.slice(0,-1);var f=prms[curBlock].id;$("#rec"+f+" table").html(""),t431_createTable(f,b,d),curBlock<prms.length?(curBlock++,getGssData()):curBlock=0},$().ready(function(){curBlock=0,getGssData()});setTimeout(parseTable, 1500);
+    
+    function parseTable() {
+    //table.style.display = 'none';
+    let tableRows = document.querySelector('#rec313495733').querySelectorAll('tr');
+    console.log(tableRows);
+    for (let i = 0; i < tableRows.length; i++) {
+    let tableCells = tableRows[i].querySelectorAll('td');
+    for (let j = 0; j < tableCells.length; j++) {
+    let tdValue = tableCells[j].innerHTML.trim();
+    if (tdValue.startsWith('img')) {
+    console.log('img');
+    parseImg(tdValue);
+    } else if (tdValue.startsWith('vid')) {
+    console.log('vid');
+    parseVid(tdValue);
+    }
+    else if (tdValue.startsWith('aud')) {
+    console.log('aud');
+    parseAud(tdValue);
+    }
+    else if (tdValue.startsWith('redir')) {
+    parseRedir(tdValue);
+    }
+    }
+    }
+    }
+    function parseImg(value) {
+    let src, blockId;
+    let clearValue = value.slice( value.indexOf('├') + 1, value.indexOf('┤') ).split('╦');
+    for (let i = 0; i < clearValue.length; i++) {
+    clearValue[i] = clearValue[i].trim().slice(1, -1);
+    }
+    [src, blockId,text] = clearValue;
+    document.querySelector(`#${blockId}`).innerHTML = `<img src="${src}" width="300"><p>${text}</p>`;
+    }
+    function parseVid(value) {
+    let src, blockId;
+    let clearValue = value.slice( value.indexOf('├') + 1, value.indexOf('┤') ).split('╦');
+    for (let i = 0; i < clearValue.length; i++) {
+    clearValue[i] = clearValue[i].trim().slice(1, -1);
+    }
+    [src, blockId,text] = clearValue;
+    document.querySelector(`#${blockId}`).innerHTML = `<video controls src="${src}" width="300" autoplay muted loop></video><p>${text}</p>`;
+    }
+    function parseAud(value) {
+    let src, blockId;
+    let clearValue = value.slice( value.indexOf('├') + 1, value.indexOf('┤') ).split('╦');
+    for (let i = 0; i < clearValue.length; i++) {
+    clearValue[i] = clearValue[i].trim().slice(1, -1);
+    }
+    [src, blockId,text] = clearValue;
+    document.querySelector(`#${blockId}`).innerHTML = `<audio controls src="${src}" autoplay loop></audio><p>${text}</p>`;
+    }
+    function parseRedir(value) {
+    let href = value.trim().slice( value.indexOf('(') + 2, -2 );
+    let link = document.createElement('a');
+    link.href = href;
+    link.click()
+    }
+    </script>
+    
